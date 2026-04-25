@@ -8,23 +8,34 @@ def mock_dao():
 
 class TestGetUserByEmail:
 
-    #These follwoing two functions could be parameterized I believe.
+    # The following two test functions (single_valid and multiple_valid) test similar scenarios
+    # and could potentially be combined into one parameterized test using @pytest.mark.parametrize.
+    # However, they are kept separate here for clarity and readability.
     def test_get_user_email_single_valid(self, mock_dao):
         #Arrange
+        #Create a fake user that the mock database will return
+        fake_user = {"_id": "abc123", "email": "single.user@example.com", "name": "Kalle"}
+        mock_dao.find.return_value = [fake_user]
         user_controller = UserController(mock_dao)
-        print()
+        email = "single.user@example.com"
         #Act
+        result = user_controller.get_user_by_email(email)
         #Assert
-        assert False == True
+        assert result == fake_user
     
     def test_get_user_email_multiple_valid(self, mock_dao):
         #Arrange
+        #Create two fake users with the same email (duplicate)
+        fake_user_1 = {"_id": "id1", "email": "dup@example.com", "name": "Alex"}
+        fake_user_2 = {"_id": "id2", "email": "dup@example.com", "name": "Charlie"}
+        mock_dao.find.return_value = [fake_user_1, fake_user_2]
         user_controller = UserController(mock_dao)
-        print()
+        email = "dup@example.com"
         #Act
-
+        result = user_controller.get_user_by_email(email)
         #Assert
-        assert False == True
+        #According to the docstring, the first user should be returned when there are multiple
+        assert result == fake_user_1
     
 
     def test_get_user_email_invalid_email(self, mock_dao):
@@ -67,16 +78,3 @@ class TestGetUserByEmail:
         res = user_controller.get_user_by_email(valid_email)
         #Assert
         assert res == None
-
-    # #Show that could have parameterized the above 5 in 1 test case.
-    # @pytest.mark.parametrize("", [
-
-    # ])
-
-    # def test_get_user_by_email_parameterized(self, mock_dao):
-    #     #Arrange
-    #     print()
-    #     #Act
-
-    #     #Assert
-    #     assert False == True
