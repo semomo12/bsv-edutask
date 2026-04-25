@@ -32,7 +32,7 @@ def patcher(validator):
         patch("src.util.dao.pymongo.MongoClient") as db_client:
         Validator.return_value = validator
         # Patch the database instance from edutask -> test_db, to not affect the prod instance.
-        prod_client = MongoClient("mongodb://root:root@localhost:27017")
+        prod_client = MongoClient("mongodb://localhost:27017")
         prod_client.edutask = prod_client.test_db
         db_client.return_value = prod_client
         yield
