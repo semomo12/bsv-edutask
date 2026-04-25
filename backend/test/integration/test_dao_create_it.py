@@ -80,7 +80,7 @@ class TestDaoCreateIT:
     #"Keyword    | Type   | Definition | Behavior
     #uniqueItems | arrays | boolean    | If true, each item in the array must be unique. Otherwise, no uniqueness constraint is enforced."
     #I.e ensure uniquness of items in arrays not across documents.
-    def test_create_unique_documents(self, dao : DAO):
+    def test_create_duplicate_document(self, dao : DAO):
         #Arrange 
         existing_obj = {"username": "A",  "logged_in" : False}
         dao.create(existing_obj)
